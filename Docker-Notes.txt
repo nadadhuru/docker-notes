@@ -1,0 +1,128 @@
+
+
+What is the core concept of Docker by using Containers?
+	Develop
+	Deploy
+	Run
+
+What is containerization?
+Use of Linux Containers (LIX) to deploy applications is called Containerization.
+
+What are advantages of containerization or why is containerization is popular?
+
+    Flexible: Even the most complex applications can be containerized.
+    Lightweight: Containers leverage and share the host kernel.
+    Interchangeable: You can deploy updates and upgrades on-the-fly.
+    Portable: You can build locally, deploy to the cloud, and run anywhere.
+    Scalable: You can increase and automatically distribute container replicas.
+    Stackable: You can stack services vertically and on-the-fly.
+
+What is a container?
+its a runtime instance of an image that shares the kernel of host machine. Its runs as discrete process.
+It runs natively on linux and shares the kernel with other containers
+
+Whatis an image?
+Its an executable package that contains everything needed (libraries, code, environment variables, config files) to run an application.
+
+How to view list of running containers?
+docker ps
+
+State differences b/w VM and Container?
+
+
+How to check Docker version?
+docker --version
+
+How to check Docker installation info?
+docker run
+or
+docker version
+
+How to test your docker installation?
+By running hello-world program as mentioned below:
+
+docker run hello-world
+
+How to view list of images downloaded to your local?
+docker images ls
+
+How to list all containers?
+docker container ls -all
+
+What is the hirerachy in Docker?
+
+	Stack
+		services
+			Containers
+
+What is a docker file?
+Portable images are defined by something called a "Dockerfile"
+Dockerfile contains the information about your container environment such as Files, Network, Storage Volumes etc.
+
+What are components in Dockerfile?
+	FROM:		This defines which PARENT image to base from.
+	WORKDIR:	
+	COPY:		Use this to place any files inside a container at a specific folder. However files need to be placed in same folder as Dockerfile
+	Run:		Any installations you need. E.g. Yum install vim or you can pass a file yum install -r filename
+	EXPOSE:		Used for specifying port#
+	ENV:		Define any environment variables
+	CMD:		
+
+How to create an image using Docker?
+
+	docker build --tag=<nameofimage>
+
+	docker build -t=<nameofimage>
+
+How to set port?
+	docker run -p <newport>:<defaultport> <containername>
+	You should see a message that Python is serving your app at http://0.0.0.0:80. 
+	But that message is coming from inside the container, which doesn’t know you mapped port 80 of that container to 4000, making the correct URL http://localhost:4000.
+	
+How to find IP address using Docker?
+	docker-machine ip
+
+Where is Docker config file located?
+	its available in /etc/docker/daemon.json
+
+How to set a DNS address?
+	Add following line to docker config file.
+	{
+		"dns": ["your_dns_address", "8.8.8.8"]
+	}
+	
+	Note:	Always make sure to restart Docker after updating config file.
+
+How to specify if you use a proxy server for connecting?
+	Proxy servers can block connections to your web app once it’s up and running. If you are behind a proxy server, add the following lines to your Dockerfile.
+	Use ENV command and specify the Host and Port in the docker file.
+	# Set proxy server, replace host:port with values for your servers
+		ENV http_proxy host:port
+		ENV https_proxy host:port
+
+How to start/stop/restart Docker?
+	service docker <start/stop/restart>
+
+How to run an app in detached or background mode?
+	docker run -d <containername>
+
+How to stop a container? (Not DOCKER)
+	docker container <stop> <containerid>
+
+What is docker registry? & repository?
+	A registry is a collection of repositories, and a repository is a collection of images
+
+How do you setup your Private Registery?
+	Using Docker Trusted Regsitry, you can setup your own registry for storing images.
+
+How many repositories you can create in a Registry?
+	Unlimited
+
+What is the registry used by docker?
+	Docker uses Docker's public registry by default
+
+How do you login into Docker Hub?
+	docker login
+
+
+
