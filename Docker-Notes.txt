@@ -124,5 +124,154 @@ What is the registry used by docker?
 How do you login into Docker Hub?
 	docker login
 
+How do you tag an image?
+	docker tag image username/repository:tag
+
+How to publish or push the image?
+	docker push username/repository:tag
+
+How to pull an image ?
+	docker run -p 4000:80 username/repository:tag
+
+How do you scale & perform load balancing on your applications?
+	This is achieved using the concept of Services in docker. A higher level than Container.
+	
+How do you define a service?
+	This is done using docker-compose.yml file.
+
+What is Docker Compose?
+	Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application’s services. 
+	Then, with a single command, you create and start all the services from your configuration
+
+How does the template (docker-compose.yml) looks like?
+	version: "x"
+	services:
+	  web:
+	    # replace username/repo:tag with your name and image details
+		image: username/repo:tag
+		deploy:
+		  replicas: 5
+		  resources:
+            limits:
+              cpus: "0.1"
+              memory: 50M
+          restart_policy:
+            condition: on-failure
+		ports:
+		  - "4000:80"
+		networks:
+		  - webnet
+	networks:
+	  webnet:
+
+How do you run your new load-balanced app?
+	docker swarm init
+	docker stack deploy -c docker-compose.yml <nameofyourapp>
+
+	After doing above command - your app will be runnning in 5 containers with 10% of CPU and 50MB of RAM in each container. You can access app using port-4000.
+
+How to view or list the service in your application?
+	docker service ls
+
+Same can be achieved using following comamnds:
+	docker service ps getstartedlab_web
+	docker container ls -q
+
+How do you scale your app?
+	Simply update the docker-compose.yml and re-run the docker stack deploy command
+
+How to take down an app?
+	docker stack rm <appname>
+
+How to take down a swarm?
+	docker swarm leave --force
+
+what is docker swarm?
+	A swarm is nothing but a  group of machine running docker grouped into a cluster. We will have a Swarm manager on a node, which will interact with other docker machines and create containers for your app.
+	All the managing is done through Swarm Manager, and swarm is a tool for container orchestartion.
+
+How to create a docker-machine?
+	docker-machine create --driver virtualbox <nameofvm>
+
+	PS:	Make sure you install docker-machine before running above command. Create 1 Manager and 2 or 3 Worker Machines
+
+How to list all docker machines?
+	docker-machine ls
+
+How to view IP address of a docker machine?
+	docker-machine ip <machinename>
+
+How to connect to your docker machine?
+	docker-machine ssh <machinename>
+	PS:	Pls make sure to do ssh connect in all machines
+	
+How to initialize the docker swarm or how to make a machine Swarm Manager?
+	docker swarm init --advertise-addr MANAGER_IP
+	
+	PS:	docker node ls --> this will list the details of swarm manager node and will not run or work in worker nodes.
+	
+How to join worker/nodes to swarm manager?
+	docker swarm join-token worker		--> Once you run this on swarm manager, it will give you a command that you can copy & run on swarm workers.
+	
+	PS:	just like ssh-copy-id (e.g).	After adding all swarm workers, please go to swarm managaer and type docker node ls
+
+How to check list of commands available with swarm?
+	docker swarm
+
+How to create a nginx application on multiple machines as a service?
+	docker service create --replicas <x> -p 80:80 --name <servicename> <imagename>
+
+	COMPARISON TABLE
+					Vagrant				Docker
+Virtualization		Virtual machine	 	Linux container
+Resource isolation	Strong				Weak (shared kernel)
+Startup time		Minutes				Seconds
+Image build time	10+ minutes			mins
+Size				1GB+				100MB+
+Sharing				Vagrant Cloud		Docker Hub
+
+How to view list of services running?
+	docker service ps <servicename>
+	docker service ls --> to view all services
+
+Which IP to use for launching your app?
+	YOu can use any manager or worker
+
+How to scale up or down the service?
+	In order to scale down or up - you need to be on Swarm managaer and run following command:
+		docker service scale <servicename>=<replicas>
+
+How to inspect any node?
+	In order to do this - you need to be on manager swarm or node and run following comamnds:
+		docker node inspect <nodename>
+		docker node inspect self
+
+How to inspect a worker node?
+	You can't inspect it from Worker node. You must do this from Manager node.
+	
+How to update a service with a new image or updated image?
+	docker service update --image <imagename>:<version> <servicename>
+
+How to remove service?
+	docker service rm <servicename>
+
+How to shutdown node?
+	docker node update --availability drain <nodename>
+
+How to decouple or leave the swarm?
+	docker swarm leave
+
+How to stop a docker machine?
+	docker-machine stop <machinename>
+	PS:	you have to run this outside of nodes or from your main machine
+
+How to remove a docker machine?
+	docker-machine rm <machinename>
+
+
+
+
+	
+
 
 
