@@ -1,0 +1,54 @@
+Yes definitely - We do have implemented something called - ContainerasaService (CaaS) at our present client. As part of that we interact with various application areas providing our services and guidance in building images and running their applications in containers.
+
+In my current team I am primarily responsible for :
+
+creating docker file
+build images
+push images to registry (we use github as registry)
+build container using image built
+performing shakedown/checkout
+=================================================
+At Infrastructure level - 
+
+We are responsible for creating various profiles (a.k.a images) w.r.to DB, MQ, BaseServer etc.
+
+=============================================
+
+At Application level - 
+
+Also we do integrate the deployment of application to container as part of CI/CD process using Jenkins.
+
+In Jenkins - we build Java applications/projects using Pipeline Jobs. I have written Pipeline scripts to generate the WAR/EAR/JAR files of application and pass that files to docker file inorder to create an image. We also push that image to our staging repository (Nexus).
+
+We also push images to our private registry and we pull that image by running/building docker container.
+
+============================================= 
+We did use Docker Swarm for container orchestration or in other words we use Docker swarm deploying applications to multiple containers in PERF/IMPL/PROD environments.
+We have achieved this using Docker Compose, where we have listed our application as a  Service along with other dependent applications as a service.
+We use this for load balancing and fail-over scenarios.
+
+=============================================
+docker swarm init
+docker stack deploy -c docker-compose.yml <nameofyourapp>
+=========================================
+Forward traffic to outisde from container host: (Default is DROP)
+$ sudo iptables -P FORWARD ACCEPT
+
+How to check if its allowed or not?
+$ sudo iptables -L -n
+
+=======================
+By default, the Docker server creates and configures the host system’s docker0 a network interface called docker0, which is an ethernet bridge device. If you don’t specify a different network when starting a container, the container is connected to the bridge and all traffic coming from and going to the container flows over the bridge to the Docker daemon, which handles routing on behalf of the container.
+
+
+
+========================
+docker run --> creates namespaces(isolation from other processes/containers), control groups (memory, cpu, disk, i/o)
+==================
+docker service logs (all containers hosting a service)
+docker logs (just 1 container)
+
+We use Splunk as logging driver:
+https://docs.docker.com/v17.09/engine/admin/logging/splunk/
+
+
